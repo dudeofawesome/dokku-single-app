@@ -2,9 +2,9 @@
 
 set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 
-APP="$1";
-IMAGE="dokku/$APP";
-PORT="$(cat /home/$IMAGE/PORT.web.1)";
+APP="$1"
+IMAGE="dokku/$APP"
+PORT="$(cat /home/dokku/$APP/PORT.web.1)"
 
 /sbin/iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port $PORT
 
