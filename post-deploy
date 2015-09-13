@@ -2,6 +2,6 @@
 
 APP="$1";
 IMAGE="dokku/$APP";
-PORT="$(cat $IMAGE/PORT.web.1)";
+PORT="$(cat /home/$IMAGE/PORT.web.1)";
 
 /sbin/iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port $PORT
