@@ -5,7 +5,7 @@ set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 APP="$1"
 IMAGE="dokku/$APP"
 PORT="$(cat /home/dokku/$APP/PORT.web.1)"
-OLDPORT="0"
+OLDPORT=0
 if [ -e "~/plugins/dokku-single-app/$APP-current-port" ]; then
 	OLDPORT="$(cat ~/plugins/dokku-single-app/$APP-current-port)"
 fi
