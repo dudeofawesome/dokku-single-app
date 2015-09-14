@@ -5,9 +5,14 @@ set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
 APP="$1"
 IMAGE="dokku/$APP"
 PORT="$(cat /home/dokku/$APP/PORT.web.1)"
-OLDPORT="$(cat /var/lib/dokku/plugins/dokku-single-app/current-port)"
+OLDPORT="0"
+if [ -e "" ]; then
+	OLDPORT="$(cat /var/lib/dokku/plugins/dokku-single-app/current-port)"
+fi
 
-/sbin/iptables -t nat -D PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port $OLDPORT
+if [ $OLDPORT -ne 0 ]; then
+	/sbin/iptables -t nat -D PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port $OLDPORT
+fi
 /sbin/iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port $PORT
 
 echo $PORT > /var/lib/dokku/plugins/dokku-single-app/current-port
