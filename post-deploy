@@ -15,6 +15,9 @@ if [ $OLDPORT -ne 0 ]; then
 fi
 /sbin/iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port $PORT
 
+if [ ! -e "~/plugins/dokku-single-app/" ]; then
+	mkdir -p ~/plugins/dokku-single-app/
+fi
 echo $PORT > ~/plugins/dokku-single-app/$APP-current-port
 
 echo "-----> Redirected port 80 to $PORT"
