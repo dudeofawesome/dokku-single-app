@@ -11,7 +11,9 @@ if [ -e ~/plugins/dokku-single-app/$APP-current-port ]; then
 fi
 
 if [ $OLDPORT -ne 0 ]; then
+	>&2 echo "XXXXXXXXXXXX testing for rule existence"
 	RULEEXISTS=$(/sbin/iptables -t nat -L | grep $OLDPORT)
+	>&2 echo "$RULEEXISTS"
 	if [ -n $RULEEXISTS ]; then
 		/sbin/iptables -t nat --delete PREROUTING -i eth0 -protocol tcp --dport 80 -j REDIRECT --to-port $OLDPORT
 	fi
