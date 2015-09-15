@@ -15,10 +15,10 @@ if [ $OLDPORT -ne 0 ]; then
 	RULEEXISTS="$(/sbin/iptables -t nat -L | grep $OLDPORT)"
 	>&2 echo "$RULEEXISTS"
 	if [ -n $RULEEXISTS ]; then
-		/sbin/iptables -t nat --delete PREROUTING -i eth0 -protocol tcp --dport 80 -j REDIRECT --to-port $OLDPORT
+		/sbin/iptables -t nat --delete PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port $OLDPORT
 	fi
 fi
-/sbin/iptables -t nat -A PREROUTING -i eth0 -protocol tcp --dport 80 -j REDIRECT --to-port $PORT
+/sbin/iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port $PORT
 
 if [ ! -e "~/plugins/dokku-single-app/" ]; then
 	mkdir -p ~/plugins/dokku-single-app/
