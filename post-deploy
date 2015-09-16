@@ -11,7 +11,11 @@ if [ -e ~/plugins/dokku-single-app/$APP-current-port ]; then
 fi
 
 if [ $OLDPORT -ne 0 ]; then
-	/sbin/iptables -t nat --delete PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port $OLDPORT
+	RULEEXISTS="$(/sbin/iptables -t nat -L)"
+	RULEEXISTS="$(echo $RULEEXISTS | grep $OLDPORT)"
+	if [ -n "$RULEEXISTS" ]; then
+		/sbin/iptables -t nat --delete PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port $OLDPORT
+	fi
 fi
 /sbin/iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port $PORT
 
